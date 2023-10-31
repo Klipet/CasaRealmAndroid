@@ -10,11 +10,13 @@ import com.example.casarealmandroid.realm.Parent
 import com.example.casarealmandroid.response_data.asl.Assortment
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
+import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.mongodb.kbson.ObjectId
 
 
 class UpdateAsl: ViewModel() {
@@ -23,27 +25,26 @@ class UpdateAsl: ViewModel() {
     fun updateAsl(aslList: List<Assortment>, context: Context){
         CoroutineScope(Dispatchers.Default).launch {
             try {
-             realm.write{
-                 for(asl in aslList){
-                     val existingAsl = realm.query<DBRealmObject>().first().find()
-                     if (existingAsl != null){
-                         updateobjectFromResponse(existingAsl, asl)
-                     }else{
-                         val newObject = createObjectFromResponse(asl)
-                         copyToRealm(newObject)
-                     }
+             realm.writeBlocking{
+                 var objectAsl = ObjectId()
+                 val existingAsl = realm.query<DBRealmObject>().find().first()
+                 val existingBarcode = realm.query<Barcode>().find().first()
+                 val existingParent = realm.query<Parent>().find().first()
+                 for(asl in aslList) {
+                     this.copyToRealm(DBRealmObject().apply {
+                         createObjectFromResponseAsl(asl, objectAsl)
+                     }, updatePolicy = UpdatePolicy.ALL)
                  }
-
              }
-         }catch (e: Exception){
-             Log.d("ExeptionAsl", e.message.toString())
-         }finally {
-             realm.close()
-             withContext(Dispatchers.Main){
-                 toastInsert(context)
-             }
-         }
-       }
+            }catch (e: Exception){
+                Log.d("ExeptionAsl", e.message.toString())
+            }finally {
+                realm.close()
+                withContext(Dispatchers.Main){
+                    toastInsert(context)
+                }
+            }
+        }
     }
 
     private fun updateobjectFromResponse(existingAsl: DBRealmObject, asl: Assortment) {
@@ -69,9 +70,24 @@ class UpdateAsl: ViewModel() {
         existingAsl.VAT = asl.VAT
         existingAsl.VATQuote = asl.VATQuote
         existingAsl.WeightSale = asl.WeightSale
-
     }
-    private fun createObjectFromResponse(asl: Assortment): DBRealmObject {
+    private fun updateBarcode(existingAsl: Barcode, asl: Assortment){
+        if (asl.Barcodes != null){
+            for (barcodeItm in asl.Barcodes){
+                existingAsl.ID = asl.ID
+                existingAsl.barcode = barcodeItm
+            }
+        }
+    }
+    private fun updateParent(existingAsl: Parent, asl: Assortment){
+        if (asl.IsFolder == true){
+            existingAsl.ID = asl.ID
+            existingAsl.Name = asl.Name
+            existingAsl.IsFolder = asl.IsFolder
+        }
+    }
+
+    private fun createObjectFromResponseAsl(asl: Assortment, id: ObjectId): DBRealmObject {
         return DBRealmObject().apply {
             AllowDiscounts = asl.AllowDiscounts
             AllowNonInteger = asl.AllowNonInteger
@@ -97,8 +113,43 @@ class UpdateAsl: ViewModel() {
         }
 
     }
+    private fun createObjectFromResponseParent(asl: Assortment): Parent{
+        return Parent().apply {
+            if (asl.IsFolder == true){
+                ID = asl.ID
+                IsFolder = asl.IsFolder
+                Name = asl.Name
+            }
+        }
+    }
+    private fun createObjectFromResponseBarcode(asl: Assortment): Barcode{
+        return Barcode().apply {
+            if (asl.Barcodes != null){
+                for (barcodeItem in asl.Barcodes){
+                    ID = asl.ID
+                    barcode = barcodeItem
+                }
+            }
+        }
+    }
+
     fun toastInsert(context: Context){
         Toast.makeText(context, "Complet", Toast.LENGTH_LONG).show()
     }
+    private fun deleteDB(){
+        val asl = DBRealmObject()
+        val barcode = Barcode()
+        val parent = Parent()
+
+        realm.writeBlocking {
+            delete(asl)
+            delete(barcode)
+            delete(parent)
+        }
+    }
 
 }
+
+
+
+

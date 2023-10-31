@@ -3,13 +3,12 @@ package com.example.casarealmandroid.realm
 
 
 
-import io.realm.annotations.RealmClass
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.Ignore
 import io.realm.kotlin.types.annotations.PrimaryKey
-
+import org.mongodb.kbson.ObjectId
 
 
 open class DBRealmObject: RealmObject {
@@ -38,14 +37,14 @@ open class DBRealmObject: RealmObject {
     var VAT: Double? = 0.0
     var VATQuote: String? = null
     var WeightSale: Boolean? = false
-}
-@RealmClass
+    }
+
 open class Barcode: RealmObject{
     @PrimaryKey
     var ID: String = ""
     var barcode: String? = null
 }
-@RealmClass
+
 open class Parent: RealmObject{
     @PrimaryKey
     var ID: String = ""

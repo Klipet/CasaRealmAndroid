@@ -43,15 +43,10 @@ android {
 
 dependencies {
     //realm
-    implementation ("io.realm:realm-gradle-plugin:10.11.0")
-    implementation ("io.realm:realm-android-library:10.9.0")
-    implementation ("io.realm.kotlin:library-base:0.10.0")
-    implementation ("io.realm.kotlin:library-sync:1.11.0")
-    kapt ("io.realm:realm-annotations:10.16.1")
-    implementation ("com.google.dagger:dagger:2.46.1")
-    kapt("com.google.dagger:dagger-compiler:2.46.1")
-    implementation ("androidx.compose.runtime:runtime-livedata:1.5.3")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation ("io.realm.kotlin:library-base:1.11.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
+
+
 
     //vp2
     implementation ("androidx.viewpager2:viewpager2:1.1.0-beta02")

@@ -14,7 +14,6 @@ import com.example.casarealmandroid.databinding.ActivityRegisterBinding
 import com.example.casarealmandroid.realm.DBRealmObject
 import com.example.casarealmandroid.view_model.AslInsert
 import com.example.casarealmandroid.view_model.UpdateAsl
-import io.realm.Realm
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -106,29 +105,9 @@ class Register : AppCompatActivity() {
         }catch (e: Exception){
             Log.d("ErroeAsl", e.message.toString())
         }finally {
-            val  intent = Intent(this, BonRegister::class.java)
-            startActivity(intent)
-            finish()
+          //  val  intent = Intent(this, BonRegister::class.java)
+          //  startActivity(intent)
+          //  finish()
         }
     }
-    private fun UpdateAsortimant(casa: String, token: String){
-        try {
-            CoroutineScope(Dispatchers.IO).launch {
-                val aslReqest = RetrofitApi.api.getAslWP(token, casa)
-                viewModelDeleteAsl.updateAsl(aslReqest.Assortments, this@Register)
-            }
-        }catch (e: Exception){
-            Log.d("ErroeAsl", e.message.toString())
-        }finally {
-        }
-    }
-
-    fun staretNewActivity(){
-        val  intent = Intent(this, BonRegister::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-
-
 }
