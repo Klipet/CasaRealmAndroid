@@ -6,4 +6,141 @@
     android:layout_height="match_parent"
     tools:context=".splash_activity.BonRegister">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fbReturn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:tint="#FEFEFE"
+        app:backgroundTint="#DCDADA"
+        app:fabSize="auto"
+        app:layout_constraintBottom_toTopOf="@+id/rcBonPosision"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:maxImageSize="70dp"
+        app:srcCompat="@android:drawable/ic_media_rew"
+        app:useCompatPadding="false" />
+
+    <TextView
+        android:id="@+id/tvNamberBon"
+        android:layout_width="312dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:text="Чек №5"
+        android:textSize="50sp"
+        app:layout_constraintStart_toEndOf="@+id/fbReturn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvNameCasa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:text="Василий Пупкин"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toStartOf="@+id/btSetting"
+        app:layout_constraintStart_toEndOf="@+id/tvNamberBon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btSetting"
+        style="@android:style/Widget.DeviceDefault.Button.Inset"
+        android:layout_width="404dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif"
+        android:insetLeft="5dp"
+        android:text="Администрирование"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcBonPosision"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/btOplata"
+        app:layout_constraintEnd_toEndOf="@+id/btOplata"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNamberBon">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/btOplata"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="400dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="#2ABD4F"
+        android:backgroundTint="#2ABC4F"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:lineSpacingExtra="24sp"
+        android:text="Оплата"
+        android:textAlignment="center"
+        android:textColor="#FFFEFE"
+        android:textColorHighlight="#138E23"
+        android:textColorLink="#16A145"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="#D60E0E" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="846dp"
+        android:layout_height="75dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="15dp"
+        app:backgroundTint="#DCDADA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btOplata"
+        tools:ignore="BottomAppBar" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Список Товаров"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvNameCasa"
+        app:layout_constraintTop_toBottomOf="@+id/tvNameCasa" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.example.casarealmandroid.fragment.FragmentAslList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomAppBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/rcBonPosision"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

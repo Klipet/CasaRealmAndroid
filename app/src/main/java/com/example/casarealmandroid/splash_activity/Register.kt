@@ -73,8 +73,6 @@ class Register : AppCompatActivity() {
         }finally {
 
         }
-
-
     }
     fun getCasa(token: String){
         CoroutineScope(Dispatchers.IO).launch {
@@ -83,24 +81,36 @@ class Register : AppCompatActivity() {
             val casaArr = casa.Workplaces.map { it.Name }.toTypedArray()
             val sharedPref = this@Register.getSharedPreferences(Constant.shared, Context.MODE_PRIVATE)
             val spEdit = sharedPref.edit()
+            val casaNameInsert =  sharedPref.getString(Constant.CWSpase, "not")
             withContext(Dispatchers.Main){
-                val builder = AlertDialog.Builder(this@Register)
-                builder.setTitle("Выберите Кассу")
-                builder.setItems(casaArr) { dialog, switc ->
-                    val casaID = casa.Workplaces.get(switc)?.ID.toString()
-                    spEdit.putString(Constant.CWSpase, casaID)
-                    spEdit.apply()
-                    insertAsortimant(casaID, token)
-                }.show()
+                if (casaNameInsert == "not"){
+                    val builder = AlertDialog.Builder(this@Register)
+                    builder.setTitle("Выберите Кассу")
+                    builder.setItems(casaArr) { dialog, switc ->
+                        val casaID = casa.Workplaces.get(switc)?.ID.toString()
+                        spEdit.putString(Constant.CWSpase, casaID)
+                        spEdit.apply()
+                        val casaName = casa.Workplaces.get(switc).Name.toString()
+                        spEdit.putString(Constant.CASANAME, casaName)
+                        spEdit.apply()
+                        insertAsortimant(casaID, token)
+                    }.show()
+                }else{
+                    insertAsortimant(casaNameInsert.toString(), token)
+                }
             }
         }
     }
     private fun insertAsortimant(casa: String, token: String){
+        val progressBar = bindind.progressBar
         try {
             CoroutineScope(Dispatchers.IO).launch {
                 val aslReqest = RetrofitApi.api.getAslWP(token, casa)
                 val asortiment = aslReqest.Assortments
-                viewModelAsl.aslInsert(asortiment)
+                startActivity(viewModelAsl.aslInsert(asortiment, this@Register))
+                withContext(Dispatchers.Main){
+
+                }
            }
         }catch (e: Exception){
             Log.d("ErroeAsl", e.message.toString())
